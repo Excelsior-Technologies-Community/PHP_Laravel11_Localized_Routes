@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Application;
-use CodeZero\LocalizedRoutes\Middleware\SetLocale;
 use Illuminate\Foundation\Configuration\Exceptions;
+use CodeZero\LocalizedRoutes\Middleware\SetLocale;
+use App\Http\Middleware\StoreLocalePreference;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,9 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up'
     )
     ->withMiddleware(function ($middleware) {
+
         $middleware->web(append: [
-            SetLocale::class, // This must be applied
+            SetLocale::class,
+            StoreLocalePreference::class, // ✅ ADD THIS
         ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
